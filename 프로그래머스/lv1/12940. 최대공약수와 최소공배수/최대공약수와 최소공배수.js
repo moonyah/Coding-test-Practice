@@ -8,6 +8,7 @@ function solution(n, m) {
     //         break;
     //     }
     // }
+    // 위의 코드) n % i === 0 && m % i === 0 이렇게 해야 함
     
     // 최소공배수 구하기
     for(var i = n; n <= 1000000; i = i + n)     {
@@ -16,7 +17,7 @@ function solution(n, m) {
             break;
         }
     }
-    answer.push(n*m/answer[0]);
+    answer.push(n*m/answer[0]); // 최대공약수
     
     return answer.sort((a, b)=>a-b);
 }
