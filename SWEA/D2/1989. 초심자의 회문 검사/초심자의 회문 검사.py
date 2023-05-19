@@ -2,7 +2,7 @@ T = int(input())
 
 for i in range(1, T + 1):
     answer = 0
-    a = list(input())
+    a = input()
     r = a[::-1] # 뒤집은 것
     
     if a == r:
