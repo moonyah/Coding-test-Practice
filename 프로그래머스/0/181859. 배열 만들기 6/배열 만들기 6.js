@@ -1,5 +1,4 @@
 function solution(arr) {
-    var answer = [];
     let i = 0;
     let stk = []
     while(i < arr.length){
