@@ -1,9 +1,4 @@
 function solution(num, total) {
-    var answer = [];
-    let 처음수 = Math.ceil(total/num - num/2);
-    for(let i = 0; i < num; i++){
-        answer.push(처음수);
-        처음수 = 처음수 + 1;
-    }
-    return answer;
+    var min = Math.ceil(total/num - num/2);
+    return new Array(num).fill(0).map((el,i)=>{return i+min;});
 }
