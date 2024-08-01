@@ -4,8 +4,7 @@ const data = require("fs")
   .trim()
   .split("\n");
 
-let hour = Number(data[0].split(" ")[0]);
-let min = Number(data[0].split(" ")[1]);
+let [hour, min] = data[0].split(" ").map(Number);
 
 let beforeTotalMin = hour * 60 + min;
 let afterTotalMin = beforeTotalMin + Number(data[1]);
