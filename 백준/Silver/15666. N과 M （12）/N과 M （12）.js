@@ -4,6 +4,7 @@ const arr = input[1]
   .split(" ")
   .map(Number)
   .sort((a, b) => a - b);
+let uniqueArr = [...new Set(arr)];
 
 let result = [];
 let sequence = [];
@@ -13,13 +14,10 @@ function recursion(depth, start) {
     result.push(sequence.join(" "));
     return;
   }
-  let prev = -1; // 중복을 방지하기 위한 변수
-  for (let i = start; i < N; i++) {
-    if (arr[i] === prev) continue; // 이전 값과 동일하면 건너뜀
-    sequence.push(arr[i]);
+  for (let i = start; i < uniqueArr.length; i++) {
+    sequence.push(uniqueArr[i]);
     recursion(depth + 1, i);
     sequence.pop();
-    prev = arr[i]; // 이전 값을 현재 값으로 업데이트
   }
 }
 
