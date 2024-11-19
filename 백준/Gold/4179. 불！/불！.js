@@ -1,97 +1,77 @@
 let input = require("fs").readFileSync("dev/stdin").toString().split("\n");
 let [R, C] = input[0].split(" ").map(Number);
 let maze = [];
-let J = [];
-let F = [];
-let visitedJ = Array.from({ length: R }, () => Array(C).fill(false));
-let visitedF = Array.from({ length: R }, () => Array(C).fill(false));
+let visited = Array.from({ length: R }, () => Array(C).fill(false));
+let queueF = [];
+let queueJ = [];
 
+// 초기화
 for (let i = 1; i < R + 1; i++) {
+  let row = input[i].trim().split("");
+  maze.push(row);
   for (let j = 0; j < C; j++) {
-    maze.push(input[i][j]);
-    if (input[i][j] === "J") {
-      J = [i - 1, j];
+    if (row[j] === "F") {
+      queueF.push([i - 1, j]);
+      visited[i - 1][j] = true; // 불은 방문 처리
     }
-    if (input[i][j] === "F") {
-      F.push([i - 1, j]);
+    if (row[j] === "J") {
+      queueJ.push([i - 1, j]);
     }
-    if (input[i][j] === "#") {
-      visitedJ[i - 1][j] = true;
-      visitedF[i - 1][j] = true;
-    }
+    if (row[j] === "#") visited[i - 1][j] = true;
   }
 }
 
 let direction = [
-  [-1, 0],
-  [1, 0],
   [0, -1],
   [0, 1],
+  [-1, 0],
+  [1, 0],
 ];
 
-let queueJ = [J];
-let queueF = F;
-visitedJ[J[0]][J[1]] = true;
-for (let fire of queueF) {
-  visitedF[fire[0]][fire[1]] = true;
-}
-let answer = 0;
-let exit = false;
+let fFront = 0;
+let jFront = 0;
+let count = 0;
 
-while (queueJ.length > 0 && !exit) {
-  answer++;
-
-  // 불의 확산 먼저 처리
-  let fireLen = queueF.length;
-  for (let i = 0; i < fireLen; i++) {
-    let [fireY, fireX] = queueF.shift();
-    for (let [y, x] of direction) {
-      let newFireY = fireY + y;
-      let newFireX = fireX + x;
-      if (
-        0 <= newFireY &&
-        newFireY < R &&
-        0 <= newFireX &&
-        newFireX < C &&
-        !visitedF[newFireY][newFireX]
-      ) {
-        visitedF[newFireY][newFireX] = true;
-        queueF.push([newFireY, newFireX]);
+// BFS 실행
+while (queueJ.length > jFront) {
+  // 1. 불 확산
+  let fCount = queueF.length - fFront;
+  for (let i = 0; i < fCount; i++) {
+    let [curFX, curFY] = queueF[fFront++];
+    for (let [dx, dy] of direction) {
+      let newFX = curFX + dx;
+      let newFY = curFY + dy;
+      if (newFX < 0 || newFX >= R || newFY < 0 || newFY >= C) continue;
+      if (!visited[newFX][newFY]) {
+        queueF.push([newFX, newFY]);
+        visited[newFX][newFY] = true; // 불은 방문 처리
       }
     }
   }
 
-  // 지훈의 이동 처리
-  let jihunLen = queueJ.length;
-  for (let i = 0; i < jihunLen; i++) {
-    let [curY, curX] = queueJ.shift();
-    for (let [y, x] of direction) {
-      let newY = curY + y;
-      let newX = curX + x;
+  // 2. 지훈 이동
+  let jCount = queueJ.length - jFront; // 지훈의 현재 레벨 처리
+  for (let i = 0; i < jCount; i++) {
+    let [curJX, curJY] = queueJ[jFront++];
+    for (let [dx, dy] of direction) {
+      let newJX = curJX + dx;
+      let newJY = curJY + dy;
 
-      // 탈출 조건 확인 (경계를 벗어난 경우)
-      if (newY < 0 || newY >= R || newX < 0 || newX >= C) {
-        console.log(answer);
-        exit = true;
-        break;
+      // 미로 탈출 확인
+      if (newJX < 0 || newJX >= R || newJY < 0 || newJY >= C) {
+        console.log(count + 1);
+        return;
       }
 
-      if (
-        0 <= newY &&
-        newY < R &&
-        0 <= newX &&
-        newX < C &&
-        !visitedJ[newY][newX] &&
-        !visitedF[newY][newX]
-      ) {
-        visitedJ[newY][newX] = true;
-        queueJ.push([newY, newX]);
+      // 방문하지 않은 위치만 이동
+      if (!visited[newJX][newJY]) {
+        queueJ.push([newJX, newJY]);
+        visited[newJX][newJY] = true; // 지훈 방문 처리
       }
     }
-    if (exit) break;
   }
+
+  count++;
 }
 
-if (!exit) {
-  console.log("IMPOSSIBLE");
-}
+console.log("IMPOSSIBLE");
