@@ -54,8 +54,7 @@ function bfs(map, w, h) {
   let dayCount = 0;
   let fireFront = 0;
   let SGFront = 0;
-  while (fireQueue.length > fireFront || SGQueue.length > SGFront) {
-    // or?
+  while (fireQueue.length > fireFront || SGQueue.length > SGFront) { // or
     let newFireQueue = [];
     // 1초 지날 경우: 불 번짐
     while (fireQueue.length > fireFront) {
