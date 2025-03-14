@@ -1,8 +1,8 @@
 const input = require("fs").readFileSync("/dev/stdin").toString().split("\n");
 let [N, M] = input[0].split(" ").map(Number); // 걸그룹 수, 문제 수
 // 팀 이름, 걸그룹 인원 수, 멤버의 이름
-let teamSet = new Set();
-let memberSet = new Set();
+let teamSet = {};
+let memberSet = {};
 let numLine = 2;
 let teamNameLine = 1;
 for (let i = 0; i < N; i++) {
