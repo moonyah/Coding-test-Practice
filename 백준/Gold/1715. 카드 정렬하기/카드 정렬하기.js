@@ -68,6 +68,11 @@ for (let i = 1; i <= N; i++) {
   arr.push(Number(input[i]));
 }
 
+if (N === 1) {
+  console.log(0);
+  return;
+}
+
 let answer = 0;
 let sum = 0;
 while (arr.getLength() > 1) {
@@ -76,14 +81,10 @@ while (arr.getLength() > 1) {
   sum = A + B;
   answer += sum;
   if (arr.getLength() === 0) break;
-  if (sum > 0) arr.push(sum);
-  // console.log(sum, arr);
+  arr.push(sum);
 }
 if (arr.getLength() === 1) {
   // N = 1일 때 조건 추가
   answer += arr.pop();
-}
-if (N == 1) {
-  answer = 0;
 }
 console.log(answer);
