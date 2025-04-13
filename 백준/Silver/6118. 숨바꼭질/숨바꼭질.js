@@ -9,9 +9,9 @@ for (let i = 1; i <= M; i++) {
 let queue = [[1, 0]];
 let visited = Array(N + 1).fill(false);
 let arr = Array(N + 1).fill(0);
-
-while (queue.length > 0) {
-  let [curr, count] = queue.shift();
+let front = 0;
+while (front < queue.length) {
+  let [curr, count] = queue[front];
   visited[curr] = true;
   count += 1;
   for (let i of graph[curr]) {
@@ -21,6 +21,7 @@ while (queue.length > 0) {
       arr[i] = count;
     }
   }
+  front++;
 }
 
 let maxDistance = 0;
