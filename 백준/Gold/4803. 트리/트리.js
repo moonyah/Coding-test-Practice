@@ -33,8 +33,9 @@ function tree(n, arr) {
       let queue = [[i, 0]]; // [현재 노드, 부모 노드]
       visited[i] = true;
       let isTree = true;
-      while (queue.length > 0) {
-        let [curr, parent] = queue.shift();
+      let front = 0;
+      while (queue.length > front) {
+        let [curr, parent] = queue[front];
         for (let next of graph[curr]) {
           if (!visited[next]) {
             visited[next] = true;
@@ -43,6 +44,7 @@ function tree(n, arr) {
             isTree = false; // 싸이클 발견
           }
         }
+        front++;
       }
       if (isTree) {
         treeCount++;
@@ -53,11 +55,11 @@ function tree(n, arr) {
 }
 
 function output(caseNum, treeCount) {
-  if (treeCount === 0) {
-    console.log(`Case ${caseNum}: No trees.`);
+  if (treeCount > 1) {
+    console.log(`Case ${caseNum}: A forest of ${treeCount} trees.`);
   } else if (treeCount === 1) {
     console.log(`Case ${caseNum}: There is one tree.`);
   } else {
-    console.log(`Case ${caseNum}: A forest of ${treeCount} trees.`);
+    console.log(`Case ${caseNum}: No trees.`);
   }
 }
