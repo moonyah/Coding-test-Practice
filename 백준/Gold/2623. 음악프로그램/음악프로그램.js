@@ -9,8 +9,7 @@ for (let line = 1; line <= M; line++) {
     inDegree[lineArr[el + 1]]++;
   }
 }
-// console.log(graph);
-// console.log(inDegree);
+
 let queue = [];
 
 // 처음 진입 차수 넣기
@@ -19,11 +18,7 @@ for (let i = 1; i <= N; i++) {
     queue.push(i);
   }
 }
-if (queue.length === 0) {
-  console.log(0);
-  return;
-}
-// console.log(queue);
+
 let answer = [];
 while (queue.length > 0) {
   let curr = queue.shift();
